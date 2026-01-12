@@ -1,0 +1,4 @@
+{
+    "dart.flutterHotReloadOnSave": true,
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
