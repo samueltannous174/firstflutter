@@ -17,11 +17,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+  String _errorMessage = '';
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
+        _errorMessage = '';
       });
 
       try {
@@ -41,27 +43,23 @@ class _LoginScreenState extends State<LoginScreen> {
               context,
             ).showSnackBar(const SnackBar(content: Text('Login Successful')));
             // Navigate to HomeScreen and remove all previous routes
-            Navigator.pushAndRemoveUntil(
+            Navigator.pushNamedAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
+              'home',
               (route) => false,
             );
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Login Failed. Please check your credentials.'),
-              ),
-            );
+            setState(() {
+              _errorMessage = 'Login failed. Please check your credentials.';
+            });
           }
         }
       } catch (e) {
         if (mounted) {
           setState(() {
             _isLoading = false;
+            _errorMessage = e.toString();
           });
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Login Error: $e')));
         }
       }
     }
@@ -129,6 +127,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                     const SizedBox(height: 24),
+                    if (_errorMessage.isNotEmpty)
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade50,
+                          border: Border.all(color: Colors.red),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          _errorMessage,
+                          style: TextStyle(
+                            color: Colors.red.shade700,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
                     CustomButton(
                       text: 'Login',
                       onPressed: _login,
@@ -141,13 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const Text("Don't have an account?"),
                         TextButton(
                           onPressed: () {
-                            //navigate to home   screen
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SignupScreen(),
-                              ),
-                            );
+                            Navigator.pushNamed(context, 'register');
                           },
                           child: const Text('Sign Up'),
                         ),

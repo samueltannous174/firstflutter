@@ -1,5 +1,4 @@
 import 'package:firstflutter/models/reel_model.dart';
-import 'package:firstflutter/screens/full_video_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -103,11 +102,10 @@ class _VideoReelItemState extends State<VideoReelItem> {
                   ),
                   onPressed: () {
                     _controller.pause();
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => FullVideoScreen(reel: widget.reel),
-                      ),
+                      'video',
+                      arguments: widget.reel,
                     ).then((_) => _controller.play());
                   },
                   icon: const Icon(Icons.movie),

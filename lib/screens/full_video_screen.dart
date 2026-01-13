@@ -2,6 +2,7 @@ import 'package:firstflutter/models/reel_model.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:ui';
+import '../services/reel_service.dart';
 
 class FullVideoScreen extends StatefulWidget {
   final ReelModel reel;
@@ -15,6 +16,8 @@ class FullVideoScreen extends StatefulWidget {
 class _FullVideoScreenState extends State<FullVideoScreen> {
   late VideoPlayerController _controller;
   bool _initialized = false;
+  bool _isContributing = false;
+  late final ReelService _reelService = ReelService();
 
   @override
   void initState() {
@@ -31,16 +34,42 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
       });
   }
   
-  void _contribute() {
-     setState(() {
-       // Simulate contributing $10
-       widget.reel.currentAmount += 10.0;
-       
-       if (!widget.reel.isLocked) {
+  void _contribute() async {
+    setState(() => _isContributing = true);
+    
+    try {
+      // Update Firebase with $10 contribution
+      await _reelService.updateFunding(widget.reel.id, 10.0);
+      
+      // Update local state
+      setState(() {
+        widget.reel.currentAmount += 10.0;
+      });
+      
+      // Play video if now unlocked
+      if (!widget.reel.isLocked && mounted) {
          _controller.play();
          _controller.setLooping(true);
-       }
-     });
+         
+         ScaffoldMessenger.of(context).showSnackBar(
+           const SnackBar(
+             content: Text('Thank you for contributing! Video unlocked.'),
+             backgroundColor: Colors.greenAccent,
+           ),
+         );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isContributing = false);
+    }
   }
 
   @override
@@ -128,8 +157,16 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
                         foregroundColor: Colors.black,
                         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                       ),
-                      onPressed: _contribute, 
-                      child: const Text("Contribute \$10"),
+                      onPressed: _isContributing ? null : _contribute, 
+                      child: _isContributing
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                            ),
+                          )
+                        : const Text("Contribute \$10"),
                     )
                  else
                     ElevatedButton(
