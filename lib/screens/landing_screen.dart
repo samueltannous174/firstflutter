@@ -75,7 +75,47 @@ class LandingScreen extends StatelessWidget {
                     Navigator.pushNamed(context, 'register');
                   },
                 ),
-                const SizedBox(height: 48),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Terms of Service',
+                        style: TextStyle(
+                          color: Colors.white60,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      '|',
+                      style: TextStyle(
+                        color: Colors.white60,
+                        fontSize: 12,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Privacy Policy',
+                        style: TextStyle(
+                          color: Colors.white60,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const Text(
+                  '© 2024 FirstFlutter. All rights reserved.',
+                  style: TextStyle(
+                    color: Colors.white38,
+                    fontSize: 10,
+                  ),
+                ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
