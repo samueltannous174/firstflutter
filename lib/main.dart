@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
+import 'screens/landing_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/full_video_screen.dart';
 import 'models/reel_model.dart';
@@ -11,9 +12,7 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -30,6 +29,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const AuthRouter(),
       routes: {
+        'landing': (_) => const LandingScreen(),
         'login': (_) => const LoginScreen(),
         'register': (_) => const SignupScreen(),
         'home': (_) => const HomeScreen(),
@@ -60,9 +60,7 @@ class AuthRouter extends StatelessWidget {
         // While checking auth state
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
 
@@ -72,7 +70,7 @@ class AuthRouter extends StatelessWidget {
         }
 
         // User is not logged in
-        return const LoginScreen();
+        return const LandingScreen();
       },
     );
   }

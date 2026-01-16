@@ -5,6 +5,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isLoading;
   final Color? color;
+  final Color? textColor;
 
   const CustomButton({
     super.key,
@@ -12,6 +13,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     this.isLoading = false,
     this.color,
+    this.textColor,
   });
 
   @override
@@ -31,10 +33,10 @@ class CustomButton extends StatelessWidget {
             ? const CircularProgressIndicator(color: Colors.white)
             : Text(
                 text,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: textColor ?? Colors.white,
                 ),
               ),
       ),
