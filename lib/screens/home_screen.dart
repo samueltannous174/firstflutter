@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/reel_service.dart';
 import '../widgets/video_reel_item.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -103,14 +104,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         ]),
                   ),
                 )
+                )
               ],
             )
-          : Center(
-              child: Text(
-                'Tab $_selectedIndex',
-                style: const TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
+          : _selectedIndex == 4
+              ? const ProfileScreen()
+              : Center(
+                  child: Text(
+                    'Tab $_selectedIndex',
+                    style: const TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
