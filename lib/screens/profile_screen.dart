@@ -74,30 +74,41 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Bio Section
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              alignment: Alignment.centerLeft,
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   Text(
-                    'About Me',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, 'about_me');
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                alignment: Alignment.centerLeft,
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                         Text(
+                          'About Me',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Icon(Icons.arrow_forward_ios, color: Colors.white70, size: 14),
+                      ],
                     ),
-                  ),
-                   SizedBox(height: 8),
-                   Text(
-                    'Creating awesome Flutter content! 🚀\nLover of mobile dev and coffee. ☕️\nCheck out my reels below! 👇',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                      height: 1.4,
+                     SizedBox(height: 8),
+                     Text(
+                      'Creating awesome Flutter content! 🚀\nLover of mobile dev and coffee. ☕️\nCheck out my reels below! 👇',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                        height: 1.4,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
              const SizedBox(height: 24),
